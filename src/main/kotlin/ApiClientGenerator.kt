@@ -1,22 +1,26 @@
 package com.salkinnoma.kotlinApiClientGenerator
 
+import com.salkinnoma.kotlinApiClientGenerator.generator.GeneratorRepository
 import com.salkinnoma.kotlinApiClientGenerator.di.libModule
 import com.salkinnoma.kotlinApiClientGenerator.setupRequest.SetupRequestRepository
-import kotlinx.serialization.json.JsonNull
 import org.koin.core.context.GlobalContext.loadKoinModules
 import org.koin.core.context.GlobalContext.startKoin
 import org.koin.java.KoinJavaComponent.getKoin
 
-class ApiClientGenerator(baseUrl: String, query: String?) {
-    private var setupRequestRepository: SetupRequestRepository
+class ApiClientGenerator() {
+    private lateinit var setupRequestRepository: SetupRequestRepository
+    private lateinit var generatorRepository: GeneratorRepository
+    private var isDataFetched = false
 
     init {
         setup()
-        setupRequestRepository = getKoin().get()
-        val json = setupRequestRepository.getAndParseRequest(baseUrl, query)
-        if (json is JsonNull) {
-            val exceptionMessage = "Api request for $baseUrl${query?.let { "?$it" } ?: ""} is null"
-            throw IllegalArgumentException(exceptionMessage)
+    }
+
+    fun generateClient(baseUrl: String, query: String?, name: String){
+        if (!isDataFetched) {
+            val json = setupRequestRepository.getAndParseRequest(baseUrl, query)
+            generatorRepository.generateDTO(json,name)
+            isDataFetched = true
         }
     }
 
@@ -28,6 +32,9 @@ class ApiClientGenerator(baseUrl: String, query: String?) {
         } else {
             loadKoinModules(libModule)
         }
+        val koin = getKoin()
+        generatorRepository= koin.get()
+        setupRequestRepository = koin.get()
     }
 
     private fun isKoinStarted(): Boolean {
