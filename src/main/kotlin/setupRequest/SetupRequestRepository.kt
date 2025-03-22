@@ -6,7 +6,7 @@ class SetupRequestRepository(
     private val setupRequestClient: SetupRequestClient,
     private val setupRequestParser: SetupRequestParser
 ) {
-    fun getAndParseRequest(baseurl: String, query: String?): JsonElement? {
+    fun getAndParseRequest(baseurl: String, query: String?): JsonElement {
         val response = setupRequestClient.doRequest(baseurl, query)
         return setupRequestParser.parseRequest(response)
     }
