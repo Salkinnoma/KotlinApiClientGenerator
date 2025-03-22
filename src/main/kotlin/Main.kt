@@ -1,5 +1,5 @@
-package com.salkinnoma.KotlinApiClientGenerator
+package com.salkinnoma.kotlinApiClientGenerator
 
 fun main() {
-    println("Hello World!")
+    ApiClientGenerator("https://reqres.in/api/users/", "?page=2/")
 }
