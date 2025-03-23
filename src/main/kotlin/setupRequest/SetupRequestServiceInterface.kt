@@ -10,5 +10,5 @@ interface SetupRequestServiceInterface {
     fun getWithQuery(@Url url: String): Call<ResponseBody>
 
     @GET
-    fun getWithoutQuery() : Call<ResponseBody>
+    fun getWithoutQuery(@Url url: String) : Call<ResponseBody>
 }

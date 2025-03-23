@@ -17,7 +17,7 @@ class SetupRequestClient {
 
         val service = retrofit.create(SetupRequestServiceInterface::class.java)
         val response = if (query.isNullOrEmpty()) {
-            service.getWithoutQuery().execute()
+            service.getWithoutQuery(baseUrl).execute()
         } else {
             service.getWithQuery(query).execute()
         }

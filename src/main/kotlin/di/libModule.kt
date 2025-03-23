@@ -1,6 +1,8 @@
 package com.salkinnoma.kotlinApiClientGenerator.di
 
+import com.salkinnoma.kotlinApiClientGenerator.generator.DtoGenerator
 import com.salkinnoma.kotlinApiClientGenerator.generator.GeneratorRepository
+import com.salkinnoma.kotlinApiClientGenerator.generator.JsonInspector
 import com.salkinnoma.kotlinApiClientGenerator.setupRequest.SetupRequestClient
 import com.salkinnoma.kotlinApiClientGenerator.setupRequest.SetupRequestParser
 import com.salkinnoma.kotlinApiClientGenerator.setupRequest.SetupRequestRepository
@@ -14,5 +16,9 @@ val libModule: Module = module {
 
     single { SetupRequestRepository(get(), get()) }
 
-    single { GeneratorRepository() }
+    single { JsonInspector() }
+
+    single { DtoGenerator() }
+
+    single { GeneratorRepository(get(), get()) }
 }

@@ -1,7 +1,7 @@
 package com.salkinnoma.kotlinApiClientGenerator
 
-import com.salkinnoma.kotlinApiClientGenerator.generator.GeneratorRepository
 import com.salkinnoma.kotlinApiClientGenerator.di.libModule
+import com.salkinnoma.kotlinApiClientGenerator.generator.GeneratorRepository
 import com.salkinnoma.kotlinApiClientGenerator.setupRequest.SetupRequestRepository
 import org.koin.core.context.GlobalContext.loadKoinModules
 import org.koin.core.context.GlobalContext.startKoin
@@ -10,18 +10,14 @@ import org.koin.java.KoinJavaComponent.getKoin
 class ApiClientGenerator() {
     private lateinit var setupRequestRepository: SetupRequestRepository
     private lateinit var generatorRepository: GeneratorRepository
-    private var isDataFetched = false
 
     init {
         setup()
     }
 
-    fun generateClient(baseUrl: String, query: String?, name: String){
-        if (!isDataFetched) {
-            val json = setupRequestRepository.getAndParseRequest(baseUrl, query)
-            generatorRepository.generateDTO(json,name)
-            isDataFetched = true
-        }
+    fun generateClient(baseUrl: String, query: String?, name: String) {
+        val json = setupRequestRepository.getAndParseRequest(baseUrl, query)
+        generatorRepository.generateDTO(json, name)
     }
 
     private fun setup() {
@@ -33,7 +29,7 @@ class ApiClientGenerator() {
             loadKoinModules(libModule)
         }
         val koin = getKoin()
-        generatorRepository= koin.get()
+        generatorRepository = koin.get()
         setupRequestRepository = koin.get()
     }
 
