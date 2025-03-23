@@ -39,10 +39,9 @@ java {
         languageVersion.set(JavaLanguageVersion.of(22))
     }
 }
+
 sourceSets {
     main {
-        java {
-            srcDirs("build/generated/ApiClientGenerator") // Include the generated directory as a source directory
-        }
+        java.srcDirs("src/main/kotlin", "build/generated/ApiClientGenerator")
     }
 }
